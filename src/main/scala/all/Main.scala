@@ -4,13 +4,6 @@ import scala.annotation.tailrec
 
 object Main {
 
-
-  def find[A](in: List[A], value: A, index: Int = 0): Int = in match {
-    case first :: _ if first == value => index
-    case _ :: rest => find(rest, value, index + 1)
-    case Nil => -1
-  }
-
   @tailrec
   def find_min(in: List[Int], min: Int = 0, index: Int = -1): Int = index match {
     case -1 => in match {
@@ -25,10 +18,22 @@ object Main {
 
   }
 
-  def find_m(in: List[Int], min: Int = 0): Int = min match{
-    case first :: rest if first < min => find_m(rest, first)
-    case _ :: rest => find_m(rest, min)
+  def min (a: Int, b: Int): Int = a - b match{
+    case x if x > 0 => b
+    case _ => a
   }
 
-def main(args: Array[String]) = println(find_min(List(13, 20, -50, -3, -5, 5, 50)))
+  def find_m(in: List[Int]): Int = in match {
+    case a :: b :: rest => min(min(a, b), find_m(rest))
+    case a :: rest  => rest match {
+      case c :: _ => min(a, c)
+      case Nil => a
+    }
+
+  }
+
+def main(args: Array[String]) {
+  println(find_min(List(13, 20, -50, -3, -5, 5, 50)))
+  println(find_m(List(13, 20, -50, -3, -5, 5, 50)))
+}
 }
